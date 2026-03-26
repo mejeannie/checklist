@@ -654,15 +654,15 @@
 <!-- CATEGORY NAV -->
 <nav class="cat-nav">
   <div class="cat-nav-inner">
-    <button class="cat-btn" onclick="scrollTo('sec-nanim',this)"><span>🏥</span> 난임</button>
-    <button class="cat-btn" onclick="scrollTo('sec-early',this)"><span>🌸</span> 임신 초기</button>
-    <button class="cat-btn" onclick="scrollTo('sec-mid',this)"><span>🌻</span> 임신 중기</button>
-    <button class="cat-btn" onclick="scrollTo('sec-late',this)"><span>🌙</span> 임신 후기</button>
-    <button class="cat-btn" onclick="scrollTo('sec-birth',this)"><span>👶</span> 출산 직후</button>
-    <button class="cat-btn" onclick="scrollTo('sec-admin',this)"><span>📋</span> 출산 후 행정</button>
-    <button class="cat-btn" onclick="scrollTo('sec-tax',this)"><span>💰</span> 세금·대출</button>
-    <button class="cat-btn dad-btn" onclick="scrollTo('section-dad',this)"><span>👨</span> 남편 할 일</button>
-    <button class="cat-btn dad-btn" onclick="scrollTo('sec-apps',this)"><span>📱</span> 추천 앱</button>
+    <button class="cat-btn" onclick="goToSection('sec-nanim',this)"><span>🏥</span> 난임</button>
+    <button class="cat-btn" onclick="goToSection('sec-early',this)"><span>🌸</span> 임신 초기</button>
+    <button class="cat-btn" onclick="goToSection('sec-mid',this)"><span>🌻</span> 임신 중기</button>
+    <button class="cat-btn" onclick="goToSection('sec-late',this)"><span>🌙</span> 임신 후기</button>
+    <button class="cat-btn" onclick="goToSection('sec-birth',this)"><span>👶</span> 출산 직후</button>
+    <button class="cat-btn" onclick="goToSection('sec-admin',this)"><span>📋</span> 출산 후 행정</button>
+    <button class="cat-btn" onclick="goToSection('sec-tax',this)"><span>💰</span> 세금·대출</button>
+    <button class="cat-btn dad-btn" onclick="goToSection('section-dad',this)"><span>👨</span> 남편 할 일</button>
+    <button class="cat-btn dad-btn" onclick="goToSection('sec-apps',this)"><span>📱</span> 추천 앱</button>
   </div>
 </nav>
 
@@ -2146,11 +2146,11 @@
 
 <script>
   // ── 카테고리 네비 스크롤 ──
-  function scrollTo(id, btn) {
+  function goToSection(id, btn) {
     const el = document.getElementById(id);
     if (!el) return;
     const offset = 110;
-    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+    const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
     window.scrollTo({ top, behavior: 'smooth' });
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');

@@ -586,6 +586,50 @@
   }
   .reset-btn:hover { border-color: var(--rose); color: var(--rose); }
 
+  /* ── 공유 버튼 ── */
+  .share-btn {
+    background: none;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    padding: 5px 13px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all .18s;
+    font-family: inherit;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+  }
+  .share-btn:hover { border-color: var(--plum); color: var(--plum); background: #fff; }
+  .share-btn.copied { border-color: #2D6A4F; color: #2D6A4F; background: #F0FDF4; }
+
+  /* ── 자동저장 토스트 ── */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--plum);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 30px;
+    opacity: 0;
+    transition: all .3s ease;
+    z-index: 9999;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 6px 20px rgba(44,36,64,.3);
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
   /* ── DIVIDER ── */
   .divider { height: 1px; background: var(--border); margin: 40px 0; }
 
@@ -780,10 +824,19 @@
     <span class="progress-label" id="progressLabel">진행률</span>
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
     <span class="progress-count" id="progressCount">0 / 0</span>
+    <button class="share-btn" id="shareBtn" onclick="shareChecklist()">🔗 공유</button>
     <button class="reset-btn" onclick="resetAll()">초기화</button>
   </div>
 </div>
 
+<!-- 자동저장 안내 (첫 방문 시에만 노출) -->
+<div id="autosaveNotice" style="display:none; background:var(--petal); border-bottom:1px solid var(--border); padding:8px 20px; text-align:center; font-size:12px; color:var(--muted);">
+  💾 체크 상태가 이 기기에 <strong style="color:var(--plum);">자동 저장</strong>돼요 — 다음에 다시 열어도 유지됩니다.
+  <button onclick="document.getElementById('autosaveNotice').style.display='none'; localStorage.setItem('noticeShown','1')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;margin-left:8px;">닫기 ✕</button>
+</div>
+
+<!-- 토스트 메시지 -->
+<div class="toast" id="toast"></div>
 <!-- CATEGORY NAV -->
 <nav class="cat-nav">
   <div class="cat-nav-inner">
@@ -2300,6 +2353,14 @@
 </footer>
 
 <script>
+  // ── 토스트 ──
+  function showToast(msg, duration = 2200) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), duration);
+  }
+
   // ── 카테고리 네비 스크롤 ──
   function goToSection(id, btn) {
     const el = document.getElementById(id);
@@ -2324,7 +2385,7 @@
     });
   }, { passive: true });
 
-  // ── Toggle checklist ──
+  // ── Toggle ──
   function toggle(el) {
     el.classList.toggle('done');
     updateProgress();
@@ -2341,23 +2402,120 @@
     document.getElementById('progressCount').textContent = done.length + ' / ' + all.length;
   }
 
-  function saveState() {
+  // ── 상태 저장 ──
+  function getState() {
     const items = document.querySelectorAll('.check-item');
-    const state = Array.from(items).map(el => el.classList.contains('done'));
-    try { localStorage.setItem('checklist_state', JSON.stringify(state)); } catch(e) {}
+    return Array.from(items).map(el => el.classList.contains('done') ? '1' : '0').join('');
   }
 
-  function loadState() {
-    try {
-      const state = JSON.parse(localStorage.getItem('checklist_state') || '[]');
-      const items = document.querySelectorAll('.check-item');
-      items.forEach((el, i) => { if (state[i]) el.classList.add('done'); });
-    } catch(e) {}
+  function applyState(stateStr) {
+    const items = document.querySelectorAll('.check-item');
+    items.forEach((el, i) => {
+      if (stateStr[i] === '1') el.classList.add('done');
+      else el.classList.remove('done');
+    });
     updateProgress();
   }
 
-  let resetStep = 0;
-  let resetTimer = null;
+  function saveState() {
+    try { localStorage.setItem('checklist_state', getState()); } catch(e) {}
+  }
+
+  function loadState() {
+    // 1순위: URL 파라미터
+    const params = new URLSearchParams(window.location.search);
+    const urlState = params.get('c');
+    if (urlState && /^[01]+$/.test(urlState)) {
+      applyState(urlState);
+      const cleanUrl = window.location.origin + window.location.pathname;
+      history.replaceState(null, '', cleanUrl);
+      showToast('✅ 공유된 체크리스트를 불러왔어요!', 3000);
+      return;
+    }
+    // 2순위: localStorage
+    try {
+      const saved = localStorage.getItem('checklist_state') || '';
+      if (saved) applyState(saved);
+    } catch(e) {}
+    updateProgress();
+    // 첫 방문 안내
+    try {
+      if (!localStorage.getItem('noticeShown')) {
+        document.getElementById('autosaveNotice').style.display = 'block';
+      }
+    } catch(e) {}
+  }
+
+  // ── 공유 링크 생성 ──
+  function shareChecklist() {
+    const state = getState();
+    if (!state.includes('1')) {
+      showToast('✏️ 먼저 체크 항목을 선택해보세요!');
+      return;
+    }
+    const baseUrl = 'https://mejeannie.github.io/checklist/';
+    const shareUrl = baseUrl + '?c=' + state;
+    const btn = document.getElementById('shareBtn');
+
+    const shareData = {
+      title: '임신·출산 완벽 체크리스트 🌸',
+      text: '샛별맘이 정리한 임신·출산 체크리스트예요! 내가 체크한 항목들을 공유할게요 💕',
+      url: shareUrl,
+    };
+
+    // 1순위: Web Share API (모바일 기기 공유 시트)
+    if (navigator.share) {
+      navigator.share(shareData)
+        .then(() => {
+          showToast('✅ 공유 완료!', 2000);
+        })
+        .catch((err) => {
+          // 취소한 경우는 무시, 에러는 URL 복사로 fallback
+          if (err.name !== 'AbortError') {
+            copyToClipboard(shareUrl, btn);
+          }
+        });
+    } else {
+      // 2순위: 클립보드 복사 (PC 또는 미지원 브라우저)
+      copyToClipboard(shareUrl, btn);
+    }
+  }
+
+  function copyToClipboard(url, btn) {
+    const onSuccess = () => {
+      btn.textContent = '✅ 복사됨!';
+      btn.classList.add('copied');
+      showToast('🔗 링크가 복사됐어요! 카카오톡·문자에 붙여넣기 하세요 💕');
+      setTimeout(() => { btn.textContent = '🔗 공유'; btn.classList.remove('copied'); }, 2500);
+    };
+    const onFail = () => {
+      showToast('❗ 링크 복사에 실패했어요. 브라우저를 확인해주세요.');
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(onSuccess).catch(() => fallbackCopy(url, onSuccess, onFail));
+    } else {
+      fallbackCopy(url, onSuccess, onFail);
+    }
+  }
+
+  function fallbackCopy(text, onSuccess, onFail) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try {
+      document.execCommand('copy');
+      onSuccess();
+    } catch(e) {
+      onFail();
+    }
+    document.body.removeChild(ta);
+  }
+
+  // ── 초기화 ──
+  let resetStep = 0, resetTimer = null;
   function resetAll() {
     const btn = document.querySelector('.reset-btn');
     if (resetStep === 0) {
@@ -2380,6 +2538,7 @@
       document.querySelectorAll('.check-item').forEach(el => el.classList.remove('done'));
       try { localStorage.removeItem('checklist_state'); } catch(e) {}
       updateProgress();
+      showToast('🗑️ 체크리스트가 초기화됐어요.');
     }
   }
 

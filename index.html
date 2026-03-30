@@ -434,6 +434,134 @@
   .ig-follow-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(232,93,138,0.5); }
   .ig-follow-btn svg { width: 20px; height: 20px; fill: #fff; }
 
+  /* ── 뉴스레터 구독 버튼 ── */
+  .nl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: var(--plum);
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    box-shadow: 0 8px 24px rgba(242,201,76,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .nl-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(242,201,76,0.55); }
+
+  /* 진행률 바 옆 미니 구독 버튼 */
+  .nl-mini-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--gold);
+    color: var(--plum);
+    text-decoration: none;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+  }
+  .nl-mini-btn:hover { opacity: 0.85; }
+
+  /* ── 하단 CTA 카드 (통일 디자인) ── */
+  .cta-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .cta-card {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+  }
+  .cta-card-icon { font-size: 28px; margin-bottom: 2px; }
+  .cta-card-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .cta-card-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px; font-weight: 700; color: var(--plum);
+    margin-bottom: 4px;
+  }
+  .cta-card-desc {
+    font-size: 12px; color: var(--muted);
+    line-height: 1.7; flex: 1; margin-bottom: 10px;
+  }
+  .cta-card-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 7px; width: 100%; padding: 12px 16px;
+    border-radius: 50px; font-size: 13px; font-weight: 700;
+    text-decoration: none; transition: all .2s; letter-spacing: .02em;
+  }
+  .cta-btn-gold {
+    background: var(--gold); color: var(--plum);
+    box-shadow: 0 6px 20px rgba(242,201,76,.35);
+  }
+  .cta-btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(242,201,76,.5); }
+  .cta-btn-rose {
+    background: linear-gradient(135deg, var(--rose), #c2185b); color: #fff;
+    box-shadow: 0 6px 20px rgba(232,93,138,.35);
+  }
+  .cta-btn-rose:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(232,93,138,.5); }
+
+  @media (max-width: 560px) {
+    .cta-cards { grid-template-columns: 1fr; max-width: 360px; }
+  }
+
+  /* 하단 CTA 뉴스레터 박스 */
+  .nl-cta-box {
+    background: linear-gradient(135deg, #FEF9E3, #FFF8D6);
+    border: 1.5px solid var(--gold);
+    border-radius: 20px;
+    padding: 24px 32px;
+    max-width: 480px;
+    margin: 0 auto 16px;
+    text-align: center;
+  }
+  .nl-cta-box .nl-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-dark, #8A6A00);
+    margin-bottom: 6px;
+  }
+  .nl-cta-box .nl-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--plum);
+    margin-bottom: 6px;
+  }
+  .nl-cta-box p {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: 0 0 14px;
+    line-height: 1.7;
+  }
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
   /* ── FOOTER ── */
   footer {
     background: var(--plum);
@@ -629,10 +757,15 @@
     시기별로 꼼꼼하게 정리했어요. 체크하면서 천천히, 우리 속도대로 준비해봐요 🤍
   </div>
 
-  <a href="https://www.instagram.com/momstory.byul/" target="_blank" class="ig-btn">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-    @momstory.byul 팔로우하기
-  </a>
+  <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+    <a href="https://www.instagram.com/momstory.byul/" target="_blank" class="ig-btn">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      @momstory.byul 팔로우하기
+    </a>
+    <a href="https://baebureun.stibee.com/" target="_blank" class="nl-btn">
+      💌 배부른 뉴스레터 구독하기
+    </a>
+  </div>
 </section>
 
 <div class="wave">
@@ -1304,6 +1437,21 @@
           </div>
           <div class="item-desc">BCG, B형간염, DTaP, 뇌수막염 등 필수 예방접종은 지정 의료기관에서 무료로 맞을 수 있어요. 접종 시기를 놓치지 않도록 예방접종도우미 앱에서 다음 접종일 미리 확인하기!</div>
           <a href="https://nip.kdca.go.kr" target="_blank" class="item-link">→ 예방접종도우미 사이트</a>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></div>
+        <div class="item-content">
+          <div class="item-header">
+            <span class="item-title">RSV 예방 항체주사 (베이포투스) — 선택 접종</span>
+            <span class="item-tag tag-hospital">병원</span>
+            <span class="item-tag tag-todo">선택사항</span>
+          </div>
+          <div class="item-desc">RSV(호흡기세포융합바이러스)는 2세 이하 영유아 10명 중 9명이 감염되는 흔한 바이러스지만, 신생아에게는 단순 감기가 아닐 수 있어요. 감기처럼 시작해 폐렴·응급실로 이어지는 경우도 있거든요.<br><br>
+          1회 접종으로 유행 시즌(10~3월) 동안 중증 감염을 예방할 수 있는 항체주사(베이포투스)가 국내에 출시돼 있어요. <strong>비급여 항목이라 비용은 약 60~70만원 전액 본인 부담이에요.</strong> 산부인과 또는 소아과에서 상담 후 결정하세요.</div>
+          <div class="info-box gold" style="margin-top:8px;">
+            💡 미숙아·선천성 심질환 등 <strong>고위험군은 건강보험 급여 적용</strong>이 가능하니 담당 의사에게 꼭 확인하세요. 또한 RSV 접종 자체는 실비 청구가 안 되지만, 감염 후 입원 시 치료비는 실손보험으로 보장받을 수 있어요.
+          </div>
         </div>
       </div>
     </div>
@@ -2113,19 +2261,37 @@
     </div>
   </div>
 
-  <!-- ───────────────────── CTA ───────────────────── -->
   <div class="cta-section">
     <div class="emoji">🌟</div>
     <h2>더 많은 임신·육아 꿀팁이 궁금하다면?</h2>
-    <p>완벽하게 준비하지 않아도 괜찮아요.<br>필요할 때 꺼내 보며 천천히, 우리 속도대로 준비해요 🤍<br><br>임신·출산·육아 실전 정보를 꾸준히 나누고 있어요.<br>팔로우하고 가장 먼저 받아보세요!</p>
-    <div class="cta-box">
-      <div class="handle">샛별맘 @momstory.byul</div>
-      <p>임신·출산·육아 실용 정보와 솔직한 후기를<br>꾸준히 공유하고 있어요 ✨</p>
+    <p>완벽하게 준비하지 않아도 괜찮아요.<br>필요할 때 꺼내 보며 천천히, 우리 속도대로 준비해요 🤍</p>
+
+    <div class="cta-cards">
+
+      <!-- 뉴스레터 박스 -->
+      <div class="cta-card">
+        <div class="cta-card-icon">💌</div>
+        <div class="cta-card-label">격주 발송 · 무료</div>
+        <div class="cta-card-title">배부른 뉴스레터</div>
+        <p class="cta-card-desc">임신 테스트기 두 줄을 보던 그 순간부터 아이가 처음 "엄마"를 부르는 날까지 — 샛별처럼 가장 먼저, 꼭 필요한 정보만 골라 보내드려요.</p>
+        <a href="https://baebureun.stibee.com/" target="_blank" class="cta-card-btn cta-btn-gold">
+          💌 뉴스레터 구독하기
+        </a>
+      </div>
+
+      <!-- 인스타그램 박스 -->
+      <div class="cta-card">
+        <div class="cta-card-icon">📱</div>
+        <div class="cta-card-label">샛별맘 인스타그램</div>
+        <div class="cta-card-title">@momstory.byul</div>
+        <p class="cta-card-desc">직접 써보고 따져보고 납득한 것들만 올려요. 릴스·피드로 빠르게 확인하고 싶을 때 팔로우해두세요.</p>
+        <a href="https://www.instagram.com/momstory.byul/" target="_blank" class="cta-card-btn cta-btn-rose">
+          <svg style="width:16px;height:16px;fill:#fff;flex-shrink:0;" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          인스타그램 팔로우하기
+        </a>
+      </div>
+
     </div>
-    <a href="https://www.instagram.com/momstory.byul/" target="_blank" class="ig-follow-btn">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-      인스타그램 팔로우하기
-    </a>
   </div>
 </div>
 
